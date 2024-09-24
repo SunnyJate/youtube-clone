@@ -5,9 +5,9 @@ const initialState = {
   video: [],
   currentPlaying: null,
   searchTerm: "",
-  searchResult: [],
+  searchResults: [],
   nextPageToken: null,
-  recommendedVideo: [],
+  recommendedVideo: []
 };
 
 const youtubeSlice = createSlice({
@@ -19,6 +19,6 @@ const youtubeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getHomePageVideos.fulfilled, (state, action) => {});
   }
-});
+})
 
 export default youtubeSlice.reducer;

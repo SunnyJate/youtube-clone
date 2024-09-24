@@ -6,7 +6,7 @@ import { getHomePageVideos } from "../store/reducers/getHomePageVideos";
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const videos = useAppSelector((state) => state.youtubeApp?.videos || []);
+   const videos = useAppSelector((state) => state.youtubeApp.videos);
   useEffect(() => {
     dispatch(getHomePageVideos(false));
   }, [dispatch]);

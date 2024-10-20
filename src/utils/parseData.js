@@ -1,12 +1,13 @@
 // This file contains the parseData function
 import axios from 'axios';
 import { parseVideoDuration } from './parseVideoDuration';
+import { convertRawToString } from './convertRawToString';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY;
 
-const convertRawToString = (num) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
+// const convertRawToString = (num) => {
+//   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+// };
 
 const timeSince = (date) => {
   const now = new Date();

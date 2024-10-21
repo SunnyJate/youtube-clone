@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { parseVideoDuration } from './parseVideoDuration';
 import { convertRawToString } from './convertRawToString';
+import { timeSince } from './timeSince';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY;
 
@@ -9,21 +10,21 @@ const API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY;
 //   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 // };
 
-const timeSince = (date) => {
-  const now = new Date();
-  const secondsPast = Math.floor((now - date) / 1000);
-  if (secondsPast < 60) return `${secondsPast} seconds ago`;
-  const minutesPast = Math.floor(secondsPast / 60);
-  if (minutesPast < 60) return `${minutesPast} minutes ago`;
-  const hoursPast = Math.floor(minutesPast / 60);
-  if (hoursPast < 24) return `${hoursPast} hours ago`;
-  const daysPast = Math.floor(hoursPast / 24);
-  if (daysPast < 30) return `${daysPast} days ago`;
-  const monthsPast = Math.floor(daysPast / 30);
-  if (monthsPast < 12) return `${monthsPast} months ago`;
-  const yearsPast = Math.floor(monthsPast / 12);
-  return `${yearsPast} years ago`;
-};
+// const timeSince = (date) => {
+//   const now = new Date();
+//   const secondsPast = Math.floor((now - date) / 1000);
+//   if (secondsPast < 60) return `${secondsPast} seconds ago`;
+//   const minutesPast = Math.floor(secondsPast / 60);
+//   if (minutesPast < 60) return `${minutesPast} minutes ago`;
+//   const hoursPast = Math.floor(minutesPast / 60);
+//   if (hoursPast < 24) return `${hoursPast} hours ago`;
+//   const daysPast = Math.floor(hoursPast / 24);
+//   if (daysPast < 30) return `${daysPast} days ago`;
+//   const monthsPast = Math.floor(daysPast / 30);
+//   if (monthsPast < 12) return `${monthsPast} months ago`;
+//   const yearsPast = Math.floor(monthsPast / 12);
+//   return `${yearsPast} years ago`;
+// };
 
 export const parseData = async (items) => {
   try {

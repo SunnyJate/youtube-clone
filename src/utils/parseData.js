@@ -6,68 +6,43 @@ import { timeSince } from './timeSince';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY;
 
-// const convertRawToString = (num) => {
-//   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-// };
-
-// const timeSince = (date) => {
-//   const now = new Date();
-//   const secondsPast = Math.floor((now - date) / 1000);
-//   if (secondsPast < 60) return `${secondsPast} seconds ago`;
-//   const minutesPast = Math.floor(secondsPast / 60);
-//   if (minutesPast < 60) return `${minutesPast} minutes ago`;
-//   const hoursPast = Math.floor(minutesPast / 60);
-//   if (hoursPast < 24) return `${hoursPast} hours ago`;
-//   const daysPast = Math.floor(hoursPast / 24);
-//   if (daysPast < 30) return `${daysPast} days ago`;
-//   const monthsPast = Math.floor(daysPast / 30);
-//   if (monthsPast < 12) return `${monthsPast} months ago`;
-//   const yearsPast = Math.floor(monthsPast / 12);
-//   return `${yearsPast} years ago`;
-// };
-
 export const parseData = async (items) => {
   try {
     const videoIds = [];
     const channelIds = [];
+
     items.forEach((item) => {
       channelIds.push(item.snippet.channelId);
       videoIds.push(item.id.videoId);
     });
 
-    const {
-      data: { items: channelsData },
-    } = await axios.get(
-      `https://youtube.googleapis.com/youtube/v3/channels?part=snippet.contentDetails&id=${channelIds.join(
-        ','
-      )}&key=${API_KEY}`
-    );
-    console.log(channelsData);
+    console.log('Channel IDs:', channelIds);
+    console.log('Video IDs:', videoIds);
 
-    const parsedChannelsData = [];
-    channelsData.forEach((channel) =>
-      parsedChannelsData.push({
-        id: channel.id,
-        image: channel.snippet.thumbnails.default.url,
-      })
+    const { data: { items: channelsData } } = await axios.get(
+      `https://youtube.googleapis.com/youtube/v3/channels?part=snippet.contentDetails&id=${channelIds.join(',')}&key=${API_KEY}`
     );
+    
+    console.log('Channels Data:', channelsData);
 
-    const {
-      data: { items: videosData },
-    } = await axios.get(
-      `https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=${videoIds.join(
-        ','
-      )}&key=${API_KEY}`
+    const parsedChannelsData = channelsData.map((channel) => ({
+      id: channel.id,
+      image: channel.snippet.thumbnails.default.url,
+    }));
+
+    const { data: { items: videosData } } = await axios.get(
+      `https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=${videoIds.join(',')}&key=${API_KEY}`
     );
 
-    const parsedData = [];
-    items.forEach((item, index) => {
-      const { image: channelImage } = parsedChannelsData.find(
+    console.log('Videos Data:', videosData);
+
+    const parsedData = items.map((item, index) => {
+      const channelImage = parsedChannelsData.find(
         (data) => data.id === item.snippet.channelId
-      );
+      )?.image;
 
       if (channelImage) {
-        parsedData.push({
+        return {
           videoId: item.id.videoId,
           videoTitle: item.snippet.title,
           videoDescription: item.snippet.description,
@@ -85,12 +60,14 @@ export const parseData = async (items) => {
             image: channelImage,
             name: item.snippet.channelTitle,
           },
-        });
+        };
       }
-    });
+
+      return null;
+    }).filter(data => data !== null);
 
     return parsedData;
   } catch (err) {
-    console.log(err);
+    console.error('Error:', err);
   }
 };

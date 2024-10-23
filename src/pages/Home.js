@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useAppDispatch, useAppSelector } from "../hooks/useApp";
 import { getHomePageVideos } from "../store/reducers/getHomePageVideos";
+import Spinner from "../components/Spinner";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -10,8 +11,6 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getHomePageVideos(false));
-    // This will ensure `dispatch` is included in the dependencies but avoid infinite loop with `videos`
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   useEffect(() => {
@@ -19,10 +18,14 @@ export default function Home() {
   }, [videos]);
 
   return (
-    <div>
-      <Navbar />
-      <Sidebar />
-      {/* You can add more components or content here */}
+    <div className="max-h-screen overflow-auto">
+      <div style={{height:"7.5vh"}}>
+        <Navbar />
+      </div>
+      <div className="flex" style={{height:"92.5vh"}}>
+        <Sidebar />
+        <Spinner />
+      </div>
     </div>
   );
 }

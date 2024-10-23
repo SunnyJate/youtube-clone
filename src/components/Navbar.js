@@ -48,6 +48,7 @@ export default function Navbar() {
         <img
           src="https://avatarfiles.alphacoders.com/365/365831.png"
           className="w-9 h-9 rounded-full"
+          alt="User Avatar"
         />
       </div>
     </div>

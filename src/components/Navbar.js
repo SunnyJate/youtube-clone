@@ -72,7 +72,7 @@ export default function Navbar() {
           </span>
         </div>
         <img
-          src="https://yt3.googleusercontent.com/Ad8Q8PblBvMbfVEEpuSiAvcLoI6XqEecc4GEjCN41716Zc1lLEjR6lPB4JXjKzMLVFYskARDaNU=s900-c-k-c0x00ffffff-no-rj"
+          src="https://i.pinimg.com/236x/09/57/f9/0957f9824df73ea2d84ff6edc15e65d7.jpg"
           alt="profile logo"
           className="w-9 h-9 rounded-full"
         />

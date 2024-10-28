@@ -6,15 +6,25 @@ import { getHomePageVideos } from '../store/reducers/getHomePageVideos';
 import Spinner from '../components/Spinner';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Card from '../components/Card';
+import { useNavigate } from 'react-router-dom';
+import { clearVideos } from '../features/youtube/youtubeSlice';
+import { getSearchPageVideos } from '../store/reducers/getSearchPageVideos';
+import SearchCard from '../components/SearchCard';
 
 export default function Home() {
 
+const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const videos = useAppSelector((state)=> state.youtubeApp.videos);
+  const searchTerm = useAppSelector((state)=> state.youtubeApp.searchTerm);
 
   useEffect(()=>{
-    dispatch(getHomePageVideos(false));
-  },[dispatch])
+    dispatch(clearVideos());
+    if(searchTerm==="")navigate("/");
+    else(
+        dispatch(getSearchPageVideos(false))
+    )
+  },[dispatch,navigate,searchTerm])
 
 
   return (
@@ -26,19 +36,25 @@ export default function Home() {
       <Sidebar/>
       {
         videos.length ? (
+            <div className='py-8 pl-8 flex flex-col gap-5 w-full'>
           <InfiniteScroll 
           dataLength={videos.length} 
-          next={()=> dispatch(getHomePageVideos(true))}
-          hasMore={videos.length<500}
+          next={()=> dispatch(getSearchPageVideos(true))}
+          hasMore={videos.length < 500}
           loader={<Spinner/>}
-          height={650}
+          height={600}
           >
-              <div className='grid gap-y-14 gap-x-8 grid-cols-4 p-8'>
+              
                 {videos.map((item) => {
-                  return <Card data={item} key={item.videoId}/>
+                  return (
+                    <div className='my-5'>
+                  <SearchCard data={item} key={item.videoId}/>
+                  </div>
+                  )
                 })}
-              </div>
+              
           </InfiniteScroll>
+          </div>
         ):(
           <Spinner/>
         )

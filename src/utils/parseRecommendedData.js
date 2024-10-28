@@ -6,7 +6,7 @@ import { timeSince } from './timeSince';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY;
 
-export const parseData = async(items) => {
+export const parseRecommendedData = async(items) => {
 
 try{
   const videoIds = [];

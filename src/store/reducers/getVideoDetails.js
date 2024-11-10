@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { convertRawtoString } from '../../utils/convertRawtoString'; // Corrected import
+import convertRawtoString from '../../utils/convertRawtoString'; // Corrected import
 import { timeSince } from "../../utils/timeSince";
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY;
